@@ -1,6 +1,6 @@
-# ChinaMedVisit Cost Comparison Widget (`widget.chinamedvisit.com`)
+# ChinaMedVisit Cost Comparison Widget
 
-Standalone, zero-dependency, zero-intrusion embeddable Web Component (`<chinamedvisit-cost-widget>`) and static SVG cost badges compiled directly from the MedVisit truth source (`E:\Soft\xoesim\MedVisit\src\data\procedures.ts`).
+Standalone, zero-dependency, zero-intrusion embeddable Web Component (`<chinamedvisit-cost-widget>`) and static SVG cost badges compiled directly from the MedVisit truth source (`E:\Soft\xoesim\MedVisit\src\data\procedures.ts`), distributed via immutable jsDelivr CDN (`@v1.0.1`).
 
 ## Key Capabilities
 
@@ -10,7 +10,7 @@ Standalone, zero-dependency, zero-intrusion embeddable Web Component (`<chinamed
   - `data-procedures`: Comma-separated list of procedure IDs (e.g., `brain-mri-3t,pet-ct-whole-body,chief-physician-consultation`) or `"all"` for all 12 procedures. Defaults to 5 flagship benchmarks when omitted.
   - `data-currency`: Initial display currency (`USD`, `EUR`, `GBP`, `AUD`, `CAD`, `SGD`, `CNY`; default `USD`).
   - `data-theme`: `"light"` or `"dark"` (default `"light"`).
-  - `data-rel`: Optional `rel` attribute applied to the attribution link so embedding publishers retain full control (defaults to `noopener`).
+  - `data-rel`: Optional `rel` attribute applied to the attribution link so embedding publishers retain full control (defaults to `nofollow noopener` for Google Widget Link Spam safety).
 - **White-Hat Editorial Attribution**: Displays a single clean brand attribution link (`Data source: ChinaMedVisit`) pointing to the canonical parameter-free URL `https://chinamedvisit.com/cost-calculator` (no UTM parameters, no commercial keyword stuffing).
 - **Static SVG Price Badges (Zero JS)**:
   - `dist/badge-mri-cost.svg` (`¥1,200–¥2,400 / $166–$331 vs US $2,200`)
@@ -23,12 +23,12 @@ node scripts/build-widget.mjs
 node --check dist/chinamedvisit-widget.js
 ```
 
-## Embed Examples
+## Embed Examples (Immutable jsDelivr CDN `@v1.0.1`)
 
 ### 1. Interactive Web Component (HTML)
 
 ```html
-<script src="https://widget.chinamedvisit.com/chinamedvisit-widget.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/ChinaMedVisit/chinamedvisit-widget@v1.0.1/dist/chinamedvisit-widget.js" crossorigin="anonymous" defer></script>
 <chinamedvisit-cost-widget
   data-procedures="chief-physician-consultation,brain-mri-3t,pet-ct-whole-body"
   data-currency="USD"
@@ -39,24 +39,18 @@ node --check dist/chinamedvisit-widget.js
 ### 2. Static SVG Cost Badges (HTML & Markdown)
 
 ```html
-<a href="https://chinamedvisit.com/cost-calculator" rel="noopener">
-  <img src="https://widget.chinamedvisit.com/badge-mri-cost.svg" alt="3.0T Brain MRI Cost in China vs US — ChinaMedVisit" width="560" height="76" />
+<a href="https://chinamedvisit.com/cost-calculator" rel="nofollow noopener">
+  <img src="https://cdn.jsdelivr.net/gh/ChinaMedVisit/chinamedvisit-widget@v1.0.1/dist/badge-mri-cost.svg" alt="ChinaMedVisit 3.0T Brain MRI Cost Benchmark" width="560" height="76" />
 </a>
 ```
 
 ```markdown
-[![3.0T Brain MRI Cost in China vs US — ChinaMedVisit](https://widget.chinamedvisit.com/badge-mri-cost.svg)](https://chinamedvisit.com/cost-calculator)
+[![ChinaMedVisit 3.0T Brain MRI Cost Benchmark](https://cdn.jsdelivr.net/gh/ChinaMedVisit/chinamedvisit-widget@v1.0.1/dist/badge-mri-cost.svg)](https://chinamedvisit.com/cost-calculator)
 ```
 
-## Deployment (Cloudflare Pages)
+## Static Hardening (`dist/_headers` & `dist/robots.txt`)
 
-Deploy the `dist/` directory to Cloudflare Pages project `chinamedvisit-widget` and attach the custom domain `widget.chinamedvisit.com`:
-
-```bash
-npx wrangler pages deploy dist --project-name=chinamedvisit-widget
-```
-
-`dist/_headers` configures `Access-Control-Allow-Origin: *` on `.js` and `.svg` assets for clean cross-origin embedding across `.edu` guides, WordPress, Ghost, Substack, and Markdown documentation.
+`dist/_headers` sets `X-Robots-Tag: noindex, follow`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Access-Control-Allow-Origin: *` + `Cross-Origin-Resource-Policy: cross-origin` + `Cache-Control: public, max-age=31536000, immutable` on `.js`/`.svg` assets, paired with `dist/robots.txt` allowing crawlers so Googlebot can honor `noindex` while rendering cross-origin embeds.
 
 ## Truth-Source Procedure IDs
 

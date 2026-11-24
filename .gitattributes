@@ -1,0 +1,3 @@
+dist/*.js text eol=lf
+dist/*.svg text eol=lf
+scripts/*.mjs text eol=lf

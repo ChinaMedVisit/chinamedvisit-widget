@@ -1,9 +1,9 @@
 {
   "name": "chinamedvisit-widget",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
-  "description": "Zero-dependency embeddable Web Component cost comparison widget and static SVG badges for widget.chinamedvisit.com",
+  "description": "Zero-dependency embeddable Web Component cost comparison widget and static SVG badges for ChinaMedVisit (jsDelivr CDN)",
   "scripts": {
     "build": "node scripts/build-widget.mjs",
     "check": "node --check dist/chinamedvisit-widget.js"

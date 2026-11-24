@@ -141,7 +141,7 @@
       link.href = CALC_URL;
       link.target = "_blank";
       const customRel = (this.getAttribute("data-rel") || "").trim();
-      link.rel = customRel || "noopener";
+      link.rel = customRel || "nofollow noopener";
       ft.appendChild(link);
 
       wrap.appendChild(hd);

@@ -14,6 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -25,6 +26,7 @@ const DIST_DIR = path.join(WIDGET_ROOT, 'dist');
 const PROCEDURES_TS_PATH = 'E:\\Soft\\xoesim\\MedVisit\\src\\data\\procedures.ts';
 const MEDVISIT_PKG_JSON = 'E:\\Soft\\xoesim\\MedVisit\\package.json';
 const MAX_WIDGET_BYTES = 18432;
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/ChinaMedVisit/chinamedvisit-widget@v1.0.1/dist';
 
 function stripTsFallback(source) {
   let code = source.replace(/export\s+interface\s+\w+\s*\{[\s\S]*?\r?\n\}/g, '');
@@ -289,7 +291,7 @@ function buildWidgetBundle({ procedures, exchangeRates }) {
       link.href = CALC_URL;
       link.target = "_blank";
       const customRel = (this.getAttribute("data-rel") || "").trim();
-      link.rel = customRel || "noopener";
+      link.rel = customRel || "nofollow noopener";
       ft.appendChild(link);
 
       wrap.appendChild(hd);
@@ -329,7 +331,7 @@ function buildBadgeSvg({ title, label, priceText, savingsPct }) {
 `;
 }
 
-function buildPreviewHtml({ procedures, exchangeRates }) {
+function buildPreviewHtml({ procedures, exchangeRates, widgetSri }) {
   const procCheckboxes = procedures
     .map((p, idx) => {
       const checked = [
@@ -349,11 +351,11 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
     .map(([code, info]) => `<option value="${code}"${code === 'USD' ? ' selected' : ''}>${code} (${escapeXml(info.symbol)}) — ${escapeXml(info.name)}</option>`)
     .join('\n            ');
 
-  const mriHtmlCode = `<a href="https://chinamedvisit.com/cost-calculator" rel="noopener"><img src="https://widget.chinamedvisit.com/badge-mri-cost.svg" alt="3.0T Brain MRI Cost in China vs US — ChinaMedVisit" width="560" height="76" /></a>`;
-  const mriMdCode = `[![3.0T Brain MRI Cost in China vs US — ChinaMedVisit](https://widget.chinamedvisit.com/badge-mri-cost.svg)](https://chinamedvisit.com/cost-calculator)`;
+  const mriHtmlCode = `<a href="https://chinamedvisit.com/cost-calculator" rel="nofollow noopener"><img src="${CDN_BASE}/badge-mri-cost.svg" alt="ChinaMedVisit 3.0T Brain MRI Cost Benchmark" width="560" height="76" /></a>`;
+  const mriMdCode = `[![ChinaMedVisit 3.0T Brain MRI Cost Benchmark](${CDN_BASE}/badge-mri-cost.svg)](https://chinamedvisit.com/cost-calculator)`;
 
-  const petHtmlCode = `<a href="https://chinamedvisit.com/cost-calculator" rel="noopener"><img src="https://widget.chinamedvisit.com/badge-petct-cost.svg" alt="Whole-Body PET-CT Cost in China vs US — ChinaMedVisit" width="560" height="76" /></a>`;
-  const petMdCode = `[![Whole-Body PET-CT Cost in China vs US — ChinaMedVisit](https://widget.chinamedvisit.com/badge-petct-cost.svg)](https://chinamedvisit.com/cost-calculator)`;
+  const petHtmlCode = `<a href="https://chinamedvisit.com/cost-calculator" rel="nofollow noopener"><img src="${CDN_BASE}/badge-petct-cost.svg" alt="ChinaMedVisit Whole-Body PET-CT Cost Benchmark" width="560" height="76" /></a>`;
+  const petMdCode = `[![ChinaMedVisit Whole-Body PET-CT Cost Benchmark](${CDN_BASE}/badge-petct-cost.svg)](https://chinamedvisit.com/cost-calculator)`;
 
   const tableRows = procedures
     .map((p) => {
@@ -373,7 +375,9 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChinaMedVisit Cost Widget &amp; SVG Badges (widget.chinamedvisit.com)</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://chinamedvisit.com/cost-calculator" />
+  <title>ChinaMedVisit Cost Widget &amp; SVG Badges</title>
   <style>
     :root { --bg: #f8fafc; --card: #ffffff; --bd: #cbd5e1; --ink: #0f172a; --mut: #475569; --acc: #0f766e; --blue: #0369a1; }
     * { box-sizing: border-box; }
@@ -450,9 +454,9 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
           <div class="ctrl-grp">
             <label class="lbl" for="relSel">Publisher Attribution <code>rel</code></label>
             <select id="relSel">
-              <option value="noopener" selected>noopener (Default)</option>
-              <option value="nofollow noopener">nofollow noopener</option>
+              <option value="nofollow noopener" selected>nofollow noopener (Default, SEO-safe)</option>
               <option value="ugc nofollow noopener">ugc nofollow noopener</option>
+              <option value="noopener">noopener (Editorial override)</option>
             </select>
           </div>
           <div class="ctrl-grp">
@@ -482,7 +486,7 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
       <p class="lead">Lightweight vector price cards with zero JavaScript required. Both HTML and Markdown snippets link cleanly to <code>https://chinamedvisit.com/cost-calculator</code>.</p>
       <div class="badges-grid">
         <div class="badge-item">
-          <img src="./badge-mri-cost.svg" alt="3.0T Brain MRI Cost in China vs US — ChinaMedVisit" width="560" height="76" />
+          <img src="./badge-mri-cost.svg" alt="ChinaMedVisit 3.0T Brain MRI Cost Benchmark" width="560" height="76" />
           <div class="code-box"><pre id="mriHtmlPre">${escapeXml(mriHtmlCode)}</pre></div>
           <div class="btn-row">
             <button type="button" class="copy-btn" data-copy-target="mriHtmlPre">Copy HTML</button>
@@ -490,7 +494,7 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
           </div>
         </div>
         <div class="badge-item">
-          <img src="./badge-petct-cost.svg" alt="Whole-Body PET-CT Cost in China vs US — ChinaMedVisit" width="560" height="76" />
+          <img src="./badge-petct-cost.svg" alt="ChinaMedVisit Whole-Body PET-CT Cost Benchmark" width="560" height="76" />
           <div class="code-box"><pre id="petHtmlPre">${escapeXml(petHtmlCode)}</pre></div>
           <div class="btn-row">
             <button type="button" class="copy-btn" data-copy-target="petHtmlPre">Copy HTML</button>
@@ -529,6 +533,9 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
       const snippetEl = document.getElementById('embedSnippet');
       const copyHtmlBtn = document.getElementById('copyHtmlBtn');
 
+      const CDN_URL = '${CDN_BASE}/chinamedvisit-widget.js';
+      const WIDGET_SRI = '${widgetSri}';
+
       function updateConfig() {
         const theme = themeSel.value;
         const curr = currSel.value;
@@ -537,7 +544,7 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
 
         widget.setAttribute('data-theme', theme);
         widget.setAttribute('data-currency', curr);
-        if (rel !== 'noopener') {
+        if (rel !== 'nofollow noopener') {
           widget.setAttribute('data-rel', rel);
         } else {
           widget.removeAttribute('data-rel');
@@ -558,10 +565,10 @@ function buildPreviewHtml({ procedures, exchangeRates }) {
         if (procAttrVal) attrs.push('  data-procedures="' + procAttrVal + '"');
         attrs.push('  data-currency="' + curr + '"');
         attrs.push('  data-theme="' + theme + '"');
-        if (rel !== 'noopener') attrs.push('  data-rel="' + rel + '"');
+        if (rel !== 'nofollow noopener') attrs.push('  data-rel="' + rel + '"');
 
         snippetEl.textContent =
-          '<script src="https://widget.chinamedvisit.com/chinamedvisit-widget.js" defer><\\/script>\\n' +
+          '<script src="' + CDN_URL + '" integrity="' + WIDGET_SRI + '" crossorigin="anonymous" defer><\\/script>\\n' +
           '<chinamedvisit-cost-widget\\n' +
           attrs.join('\\n') +
           '>\\n</chinamedvisit-cost-widget>';
@@ -633,6 +640,7 @@ function main() {
   const widgetOutPath = path.join(DIST_DIR, 'chinamedvisit-widget.js');
   fs.writeFileSync(widgetOutPath, widgetJs, 'utf8');
   execFileSync(process.execPath, ['--check', widgetOutPath]);
+  const widgetSri = 'sha384-' + crypto.createHash('sha384').update(widgetJs, 'utf8').digest('base64');
 
   const usdRate = truth.exchangeRates.USD.rateToRmb;
   const mri = truth.procedures.find((p) => p.id === 'brain-mri-3t');
@@ -663,14 +671,32 @@ function main() {
 
   fs.writeFileSync(path.join(DIST_DIR, 'badge-mri-cost.svg'), mriSvg, 'utf8');
   fs.writeFileSync(path.join(DIST_DIR, 'badge-petct-cost.svg'), petSvg, 'utf8');
-  fs.writeFileSync(path.join(DIST_DIR, 'index.html'), buildPreviewHtml(truth), 'utf8');
+  fs.writeFileSync(path.join(DIST_DIR, 'index.html'), buildPreviewHtml({ ...truth, widgetSri }), 'utf8');
   fs.writeFileSync(
     path.join(DIST_DIR, '_headers'),
-    `/*.js\n  Access-Control-Allow-Origin: *\n  Cache-Control: public, max-age=3600\n\n/*.svg\n  Access-Control-Allow-Origin: *\n  Cache-Control: public, max-age=3600\n`,
+    [
+      '/*',
+      '  X-Robots-Tag: noindex, follow',
+      '  X-Content-Type-Options: nosniff',
+      '  Referrer-Policy: strict-origin-when-cross-origin',
+      '',
+      '/*.js',
+      '  Access-Control-Allow-Origin: *',
+      '  Cross-Origin-Resource-Policy: cross-origin',
+      '  Cache-Control: public, max-age=31536000, immutable',
+      '',
+      '/*.svg',
+      '  Access-Control-Allow-Origin: *',
+      '  Cross-Origin-Resource-Policy: cross-origin',
+      '  Cache-Control: public, max-age=31536000, immutable',
+      ''
+    ].join('\n'),
     'utf8'
   );
+  fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), 'User-agent: *\nAllow: /\n', 'utf8');
 
   console.log(`Built ${widgetOutPath}: ${widgetBytes} bytes (< ${MAX_WIDGET_BYTES} bytes limit)`);
+  console.log(`SRI: ${widgetSri}`);
   console.log(`node --check passed: ${widgetOutPath}`);
   console.log(`Built SVG badges: badge-mri-cost.svg (${Buffer.byteLength(mriSvg)}B), badge-petct-cost.svg (${Buffer.byteLength(petSvg)}B)`);
   console.log(`Built preview page: ${path.join(DIST_DIR, 'index.html')}`);
