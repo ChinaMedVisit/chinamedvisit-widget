@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="76" viewBox="0 0 560 76" role="img" aria-label="Whole-Body PET-CT: ¥7,000–¥11,000 / $966–$1,518 vs US $5,800">
+  <title>Whole-Body PET-CT — ¥7,000–¥11,000 / $966–$1,518 vs US $5,800 (Data source: ChinaMedVisit)</title>
+  <defs>
+    <clipPath id="cardClip">
+      <rect x="0.5" y="0.5" width="559" height="75" rx="9.5" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#cardClip)">
+    <rect x="0.5" y="0.5" width="559" height="75" rx="9.5" fill="#ffffff" />
+    <rect x="0" y="0" width="148" height="76" fill="#0f766e" />
+    <text x="14" y="27" fill="#99f6e4" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="9.5" font-weight="700" letter-spacing="0.6">CHINA TIER-3A IMC</text>
+    <text x="14" y="49" fill="#ffffff" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13.5" font-weight="700">Whole-Body PET-CT</text>
+    <text x="164" y="30" fill="#0f172a" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="800">¥7,000–¥11,000 / $966–$1,518 vs US $5,800</text>
+    <text x="164" y="55" fill="#475569" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500">China Tier-3A Public IMC (2026) • Data source: ChinaMedVisit</text>
+    <rect x="474" y="40" width="72" height="22" rx="11" fill="#ecfdf5" />
+    <text x="510" y="55" text-anchor="middle" fill="#047857" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="700">Save ~79%</text>
+  </g>
+  <rect x="0.5" y="0.5" width="559" height="75" rx="9.5" fill="none" stroke="#cbd5e1" stroke-width="1" />
+</svg>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChinaMedVisit Cost Widget &amp; SVG Badges (widget.chinamedvisit.com)</title>
+  <style>
+    :root { --bg: #f8fafc; --card: #ffffff; --bd: #cbd5e1; --ink: #0f172a; --mut: #475569; --acc: #0f766e; --blue: #0369a1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
+    header { background: #0f172a; color: #f8fafc; padding: 28px 20px; }
+    .container { max-width: 1020px; margin: 0 auto; padding: 0 20px; }
+    header h1 { margin: 0 0 6px; font-size: 24px; }
+    header p { margin: 0; color: #cbd5e1; max-width: 720px; font-size: 14px; }
+    .nav-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .nav-pills a { color: #99f6e4; text-decoration: none; font-size: 13px; font-weight: 600; padding: 5px 10px; border: 1px solid #334155; border-radius: 6px; }
+    .nav-pills a:hover { background: #1e293b; }
+    main { padding: 26px 0 48px; }
+    section.card { background: var(--card); border: 1px solid var(--bd); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+    h2 { margin: 0 0 8px; font-size: 18px; }
+    .lead { margin: 0 0 16px; color: var(--mut); font-size: 13.5px; }
+    .grid { display: grid; grid-template-columns: 310px 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+    .controls { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; }
+    .ctrl-grp { margin-bottom: 12px; }
+    .ctrl-grp label.lbl { display: block; font-size: 12px; font-weight: 700; color: var(--mut); margin-bottom: 5px; }
+    select { width: 100%; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--bd); font-size: 13px; background: #fff; }
+    .proc-list { max-height: 220px; overflow-y: auto; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+    .chk { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; cursor: pointer; }
+    .preset-row { display: flex; gap: 6px; margin-bottom: 6px; }
+    .btn-sm { padding: 4px 8px; border-radius: 5px; border: 1px solid var(--bd); background: #fff; font-size: 11.5px; font-weight: 600; cursor: pointer; }
+    .btn-sm:hover { background: #f1f5f9; }
+    .code-box { margin-top: 16px; background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 12px 14px; position: relative; }
+    .code-box pre { margin: 0; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .copy-btn { margin-top: 8px; padding: 6px 12px; border-radius: 6px; border: 0; background: var(--acc); color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .copy-btn:hover { background: #115e59; }
+    .badges-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 820px) { .badges-grid { grid-template-columns: 1fr; } }
+    .badge-item { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; background: #f8fafc; }
+    .badge-item img { max-width: 100%; height: auto; display: block; margin-bottom: 10px; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid #e2e8f0; }
+    th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--mut); background: #f8fafc; }
+    .zh-sub { font-size: 11.5px; color: var(--mut); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>ChinaMedVisit Embeddable Cost Widget &amp; SVG Badges</h1>
+      <p>Zero-dependency Shadow DOM Web Component (&lt;18 KB) and static SVG price badges built directly from verified 2026 Chinese Tier-3A IMC benchmarks.</p>
+      <div class="nav-pills">
+        <a href="https://chinamedvisit.com/cost-calculator" target="_blank" rel="noopener">Full Cost Calculator →</a>
+        <a href="https://chinamedvisit.com/hospitals" target="_blank" rel="noopener">76 Tier-3A Hospitals →</a>
+        <a href="https://chinamedvisit.com/hospitals/chinese-names" target="_blank" rel="noopener">Bilingual Taxi Cards →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>1. Interactive Web Component Configurator</h2>
+      <p class="lead">Customize procedures, currency, theme, and publisher <code>rel</code> policy. Includes one clean brand link (<code>Data source: ChinaMedVisit</code>) to <code>https://chinamedvisit.com/cost-calculator</code>.</p>
+      <div class="grid">
+        <div class="controls">
+          <div class="ctrl-grp">
+            <label class="lbl" for="themeSel">Theme (<code>data-theme</code>)</label>
+            <select id="themeSel">
+              <option value="light" selected>Light (Clinical Paper)</option>
+              <option value="dark">Dark (Slate Night)</option>
+            </select>
+          </div>
+          <div class="ctrl-grp">
+            <label class="lbl" for="currSel">Initial Currency (<code>data-currency</code>)</label>
+            <select id="currSel">
+              <option value="USD" selected>USD ($) — US Dollar (USD)</option>
+            <option value="EUR">EUR (€) — Euro (EUR)</option>
+            <option value="GBP">GBP (£) — British Pound (GBP)</option>
+            <option value="AUD">AUD (A$) — Australian Dollar (AUD)</option>
+            <option value="CAD">CAD (C$) — Canadian Dollar (CAD)</option>
+            <option value="SGD">SGD (S$) — Singapore Dollar (SGD)</option>
+            <option value="CNY">CNY (¥) — Chinese Yuan (RMB)</option>
+            </select>
+          </div>
+          <div class="ctrl-grp">
+            <label class="lbl" for="relSel">Publisher Attribution <code>rel</code></label>
+            <select id="relSel">
+              <option value="noopener" selected>noopener (Default)</option>
+              <option value="nofollow noopener">nofollow noopener</option>
+              <option value="ugc nofollow noopener">ugc nofollow noopener</option>
+            </select>
+          </div>
+          <div class="ctrl-grp">
+            <label class="lbl">Procedures (<code>data-procedures</code>)</label>
+            <div class="preset-row">
+              <button type="button" class="btn-sm" id="btnTop5">Top 5 Flagship</button>
+              <button type="button" class="btn-sm" id="btnAll12">All 12 Procedures</button>
+            </div>
+            <div class="proc-list" id="procList">
+              <label class="chk"><input type="checkbox" name="proc" value="chief-physician-consultation" checked /> <span>Chief Physician (主任医师) Consultation</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="mdt-tumor-board"  /> <span>Multi-Disciplinary Team (MDT 会诊) Tumor Board</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="pathology-second-opinion"  /> <span>Histopathology Slide &amp; Biopsy 2nd Opinion Review</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="brain-mri-3t" checked /> <span>3.0T Brain MRI (with &amp; without Contrast)</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="pet-ct-whole-body" checked /> <span>Whole-Body 18F-FDG PET-CT Oncology Scan</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="chest-ct-contrast"  /> <span>High-Resolution Contrast Chest CT Scan</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="gastroscopy-colonoscopy-painless" checked /> <span>Painless Gastroscopy + Colonoscopy (Dual Endoscopy)</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="executive-health-screening" checked /> <span>Executive Comprehensive Health Assessment (VIP)</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="cardiac-coronary-angiography"  /> <span>Coronary Angiography (CAG Diagnostic)</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="knee-arthroscopy-meniscus"  /> <span>Arthroscopic Knee Meniscus Repair / Debridement</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="total-hip-replacement"  /> <span>Total Hip Arthroplasty (THA Replacement)</span></label>
+          <label class="chk"><input type="checkbox" name="proc" value="inpatient-vip-room-daily"  /> <span>Inpatient IMC Private Single Room (Per Day)</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <chinamedvisit-cost-widget id="liveWidget" data-currency="USD" data-theme="light"></chinamedvisit-cost-widget>
+          <div class="code-box">
+            <pre id="embedSnippet"></pre>
+            <button type="button" class="copy-btn" id="copyHtmlBtn">Copy HTML Embed Code</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Zero-JS Static SVG Cost Badges (WordPress / Substack / Medium / GitHub)</h2>
+      <p class="lead">Lightweight vector price cards with zero JavaScript required. Both HTML and Markdown snippets link cleanly to <code>https://chinamedvisit.com/cost-calculator</code>.</p>
+      <div class="badges-grid">
+        <div class="badge-item">
+          <img src="./badge-mri-cost.svg" alt="3.0T Brain MRI Cost in China vs US — ChinaMedVisit" width="560" height="76" />
+          <div class="code-box"><pre id="mriHtmlPre">&lt;a href=&quot;https://chinamedvisit.com/cost-calculator&quot; rel=&quot;noopener&quot;&gt;&lt;img src=&quot;https://widget.chinamedvisit.com/badge-mri-cost.svg&quot; alt=&quot;3.0T Brain MRI Cost in China vs US — ChinaMedVisit&quot; width=&quot;560&quot; height=&quot;76&quot; /&gt;&lt;/a&gt;</pre></div>
+          <div class="btn-row">
+            <button type="button" class="copy-btn" data-copy-target="mriHtmlPre">Copy HTML</button>
+            <button type="button" class="copy-btn" data-copy-raw="[![3.0T Brain MRI Cost in China vs US — ChinaMedVisit](https://widget.chinamedvisit.com/badge-mri-cost.svg)](https://chinamedvisit.com/cost-calculator)">Copy Markdown</button>
+          </div>
+        </div>
+        <div class="badge-item">
+          <img src="./badge-petct-cost.svg" alt="Whole-Body PET-CT Cost in China vs US — ChinaMedVisit" width="560" height="76" />
+          <div class="code-box"><pre id="petHtmlPre">&lt;a href=&quot;https://chinamedvisit.com/cost-calculator&quot; rel=&quot;noopener&quot;&gt;&lt;img src=&quot;https://widget.chinamedvisit.com/badge-petct-cost.svg&quot; alt=&quot;Whole-Body PET-CT Cost in China vs US — ChinaMedVisit&quot; width=&quot;560&quot; height=&quot;76&quot; /&gt;&lt;/a&gt;</pre></div>
+          <div class="btn-row">
+            <button type="button" class="copy-btn" data-copy-target="petHtmlPre">Copy HTML</button>
+            <button type="button" class="copy-btn" data-copy-raw="[![Whole-Body PET-CT Cost in China vs US — ChinaMedVisit](https://widget.chinamedvisit.com/badge-petct-cost.svg)](https://chinamedvisit.com/cost-calculator)">Copy Markdown</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. Verified 12-Procedure Benchmark Reference (Truth Source)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Procedure</th>
+            <th>China Tier-3A IMC</th>
+            <th>US Avg Self-Pay</th>
+            <th>UK Private</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+        <td><strong>Chief Physician (主任医师) Consultation</strong><div class="zh-sub">知名专家 / 主任医师特需门诊</div></td>
+        <td><code>¥300–¥800</code><div class="zh-sub">$41–$110 USD</div></td>
+        <td>$450</td>
+        <td>£320</td>
+      </tr>
+      <tr>
+        <td><strong>Multi-Disciplinary Team (MDT 会诊) Tumor Board</strong><div class="zh-sub">多学科专家联合会诊（MDT）</div></td>
+        <td><code>¥1,500–¥3,500</code><div class="zh-sub">$207–$483 USD</div></td>
+        <td>$2,800</td>
+        <td>£1,800</td>
+      </tr>
+      <tr>
+        <td><strong>Histopathology Slide &amp; Biopsy 2nd Opinion Review</strong><div class="zh-sub">病理切片专家二次会诊与免疫组化复核</div></td>
+        <td><code>¥600–¥1,800</code><div class="zh-sub">$83–$248 USD</div></td>
+        <td>$1,500</td>
+        <td>£750</td>
+      </tr>
+      <tr>
+        <td><strong>3.0T Brain MRI (with &amp; without Contrast)</strong><div class="zh-sub">3.0T 头部磁共振平扫加增强</div></td>
+        <td><code>¥1,200–¥2,400</code><div class="zh-sub">$166–$331 USD</div></td>
+        <td>$2,200</td>
+        <td>£850</td>
+      </tr>
+      <tr>
+        <td><strong>Whole-Body 18F-FDG PET-CT Oncology Scan</strong><div class="zh-sub">全身 PET-CT 肿瘤代谢显像</div></td>
+        <td><code>¥7,000–¥11,000</code><div class="zh-sub">$966–$1,518 USD</div></td>
+        <td>$5,800</td>
+        <td>£2,400</td>
+      </tr>
+      <tr>
+        <td><strong>High-Resolution Contrast Chest CT Scan</strong><div class="zh-sub">胸部薄层高分辨 CT（增强）</div></td>
+        <td><code>¥650–¥1,300</code><div class="zh-sub">$90–$179 USD</div></td>
+        <td>$1,400</td>
+        <td>£650</td>
+      </tr>
+      <tr>
+        <td><strong>Painless Gastroscopy + Colonoscopy (Dual Endoscopy)</strong><div class="zh-sub">无痛胃肠镜联合检查（静脉麻醉）</div></td>
+        <td><code>¥2,200–¥4,200</code><div class="zh-sub">$304–$580 USD</div></td>
+        <td>$3,800</td>
+        <td>£2,200</td>
+      </tr>
+      <tr>
+        <td><strong>Executive Comprehensive Health Assessment (VIP)</strong><div class="zh-sub">VIP 尊享深度防癌与心脑血管体检套餐</div></td>
+        <td><code>¥4,500–¥9,800</code><div class="zh-sub">$621–$1,352 USD</div></td>
+        <td>$4,500</td>
+        <td>£2,800</td>
+      </tr>
+      <tr>
+        <td><strong>Coronary Angiography (CAG Diagnostic)</strong><div class="zh-sub">经桡动脉冠状动脉造影检查</div></td>
+        <td><code>¥4,500–¥8,500</code><div class="zh-sub">$621–$1,173 USD</div></td>
+        <td>$8,200</td>
+        <td>£4,200</td>
+      </tr>
+      <tr>
+        <td><strong>Arthroscopic Knee Meniscus Repair / Debridement</strong><div class="zh-sub">关节镜下膝关节半月板缝合/修整微创手术</div></td>
+        <td><code>¥18,000–¥32,000</code><div class="zh-sub">$2,484–$4,416 USD</div></td>
+        <td>$14,500</td>
+        <td>£7,200</td>
+      </tr>
+      <tr>
+        <td><strong>Total Hip Arthroplasty (THA Replacement)</strong><div class="zh-sub">全髋关节置换术（进口陶瓷假体）</div></td>
+        <td><code>¥45,000–¥78,000</code><div class="zh-sub">$6,210–$10,764 USD</div></td>
+        <td>$38,000</td>
+        <td>£16,500</td>
+      </tr>
+      <tr>
+        <td><strong>Inpatient IMC Private Single Room (Per Day)</strong><div class="zh-sub">特需/国际部单人间病房（按日计费）</div></td>
+        <td><code>¥1,200–¥2,800</code><div class="zh-sub">$166–$386 USD</div></td>
+        <td>$2,800</td>
+        <td>£1,200</td>
+      </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="./chinamedvisit-widget.js" defer></script>
+  <script>
+    (() => {
+      const widget = document.getElementById('liveWidget');
+      const themeSel = document.getElementById('themeSel');
+      const currSel = document.getElementById('currSel');
+      const relSel = document.getElementById('relSel');
+      const procBoxes = Array.from(document.querySelectorAll('#procList input[type="checkbox"]'));
+      const snippetEl = document.getElementById('embedSnippet');
+      const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+
+      function updateConfig() {
+        const theme = themeSel.value;
+        const curr = currSel.value;
+        const rel = relSel.value;
+        const checked = procBoxes.filter((c) => c.checked).map((c) => c.value);
+
+        widget.setAttribute('data-theme', theme);
+        widget.setAttribute('data-currency', curr);
+        if (rel !== 'noopener') {
+          widget.setAttribute('data-rel', rel);
+        } else {
+          widget.removeAttribute('data-rel');
+        }
+
+        let procAttrVal = '';
+        if (checked.length === procBoxes.length) {
+          procAttrVal = 'all';
+          widget.setAttribute('data-procedures', 'all');
+        } else if (checked.length > 0) {
+          procAttrVal = checked.join(',');
+          widget.setAttribute('data-procedures', procAttrVal);
+        } else {
+          widget.removeAttribute('data-procedures');
+        }
+
+        const attrs = [];
+        if (procAttrVal) attrs.push('  data-procedures="' + procAttrVal + '"');
+        attrs.push('  data-currency="' + curr + '"');
+        attrs.push('  data-theme="' + theme + '"');
+        if (rel !== 'noopener') attrs.push('  data-rel="' + rel + '"');
+
+        snippetEl.textContent =
+          '<script src="https://widget.chinamedvisit.com/chinamedvisit-widget.js" defer><\/script>\n' +
+          '<chinamedvisit-cost-widget\n' +
+          attrs.join('\n') +
+          '>\n</chinamedvisit-cost-widget>';
+      }
+
+      document.getElementById('btnTop5').addEventListener('click', () => {
+        const top5 = new Set([
+          'chief-physician-consultation',
+          'brain-mri-3t',
+          'pet-ct-whole-body',
+          'gastroscopy-colonoscopy-painless',
+          'executive-health-screening'
+        ]);
+        procBoxes.forEach((c) => { c.checked = top5.has(c.value); });
+        updateConfig();
+      });
+
+      document.getElementById('btnAll12').addEventListener('click', () => {
+        procBoxes.forEach((c) => { c.checked = true; });
+        updateConfig();
+      });
+
+      [themeSel, currSel, relSel].forEach((el) => el.addEventListener('change', updateConfig));
+      procBoxes.forEach((c) => c.addEventListener('change', updateConfig));
+
+      function flashCopy(btn, text) {
+        const orig = btn.textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = orig; }, 1600);
+          }).catch(() => {});
+        }
+      }
+
+      copyHtmlBtn.addEventListener('click', () => flashCopy(copyHtmlBtn, snippetEl.textContent));
+
+      document.querySelectorAll('[data-copy-target]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.getAttribute('data-copy-target'));
+          if (target) flashCopy(btn, target.textContent);
+        });
+      });
+
+      document.querySelectorAll('[data-copy-raw]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          flashCopy(btn, btn.getAttribute('data-copy-raw'));
+        });
+      });
+
+      updateConfig();
+    })();
+  </script>
+</body>
+</html>
